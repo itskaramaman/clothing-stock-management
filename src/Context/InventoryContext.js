@@ -4,9 +4,9 @@ const InventoryContext = createContext();
 
 export const InventoryProvider = ({children}) => {
     const [stockRecords, setStockRecords] = useState({header: [], data: []});
-    const [currentStocks, setCurrentStocks] = useState([]);
-    const [suppliers, setSuppliers] = useState([]);
-    const [customers, setCustomers] = useState([]);
+    // const [currentStocks, setCurrentStocks] = useState([]);
+    // const [suppliers, setSuppliers] = useState([]);
+    // const [customers, setCustomers] = useState([]);
 
     useEffect(()=>{
         fetchStockRecords();
