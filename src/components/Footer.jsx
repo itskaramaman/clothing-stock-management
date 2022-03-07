@@ -3,7 +3,7 @@ function Footer() {
     const date = new Date();
 
     return (
-        <footer className="bg-secondary">
+        <footer className="bg-secondary fixed-bottom">
             <div className="container p-2 d-flex justify-content-between">
                 <span>Copyright {date.getFullYear()}</span>
                 <span><b>Developed by</b> Jasmine, Pamela, Jaspal, Minh, Karamjeet</span>
