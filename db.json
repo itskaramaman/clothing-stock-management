@@ -265,6 +265,15 @@
       "customer": "Johny",
       "description": "Goat ",
       "id": 11
+    },
+    {
+      "productName": "5bdbdjbhjb",
+      "productId": "P123",
+      "category": "Shirt",
+      "supplier": "Zara",
+      "quantity": "25",
+      "description": "Zara zara paa ke aai kale rang da",
+      "id": 12
     }
   ]
 }
