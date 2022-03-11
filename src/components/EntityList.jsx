@@ -32,7 +32,7 @@ function EntityList() {
                     </tbody>
                 </table>
             </div>
-            <div className='mt-3'>
+            <div>
                 <h3>Customer</h3>
                 <table className="table table-striped">
                     <thead>

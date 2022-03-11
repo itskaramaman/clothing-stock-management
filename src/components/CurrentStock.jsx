@@ -18,13 +18,13 @@ function CurrentStock() {
                 </tr>
             </thead>
             <tbody>
-                {currentStocks.map(d=>(<tr key={d.transactionId}>
-                    <td>{d.transactionId}</td>
+                {currentStocks.map(d=>(<tr key={d.productId}>
+                    <td>{d.productName}</td>
                     <td>{d.productId}</td>
-                    <td>{d.employee}</td>
-                    <td>{d.type}</td>
-                    <td>{d.entity}</td>
-                    <td>{d.time}</td>
+                    <td>{d.category}</td>
+                    <td>{d.supplier}</td>
+                    <td>{d.quantity}</td>
+                    <td>{d.description}</td>
                 </tr>))}
             </tbody>
         </table>

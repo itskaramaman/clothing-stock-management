@@ -24,63 +24,64 @@ export const InventoryProvider = ({children}) => {
         fetchCustomers();
     }, [])
 
-    const fetchStockRecords = () => {
-        setStockRecords([
-            {transactionId: '5bdbdjbhjb', productId: 'P123', employee: 'Jack', type: 'Stock out', entity: 'Cus - Customer name', time:'13:07', date: 'Feb 08, 2022', quantity:'05'},
-            {transactionId: '5bdbdjbsjb', productId: 'P133', employee: 'Katie', type: 'Stock in', entity: 'Sup - Supplier name', time:'17:07', date: 'Feb 06, 2022', quantity:'12'},
-            {transactionId: '5bdbdjbajb', productId: 'P143', employee: 'Hank', type: 'Stock out', entity: 'Cus - Customer name', time:'23:07', date: 'Feb 07, 2022', quantity:'25'},
-            {transactionId: '5bdbdjbxjb', productId: 'P153', employee: 'Travis', type: 'Stock in', entity: 'Sup - Supplier name', time:'33:07', date: 'Feb 09, 2022', quantity:'35'},
-            {transactionId: '5bdbdjbvjb', productId: 'P123', employee: 'Jack', type: 'Stock out', entity: 'Cus - Customer name', time:'13:07', date: 'Feb 08, 2022', quantity:'05'},
-            {transactionId: '5bdbdjbbjb', productId: 'P133', employee: 'Katie', type: 'Stock in', entity: 'Sup - Supplier name', time:'17:07', date: 'Feb 06, 2022', quantity:'12'},
-            {transactionId: '5bdbdjbnjb', productId: 'P143', employee: 'Hank', type: 'Stock out', entity: 'Cus - Customer name', time:'23:07', date: 'Feb 07, 2022', quantity:'25'},
-            {transactionId: '5bdbdjbmjb', productId: 'P153', employee: 'Travis', type: 'Stock in', entity: 'Sup - Supplier name', time:'33:07', date: 'Feb 09, 2022', quantity:'35'}
-        ])
+    const fetchStockRecords = async () => {
+        const response = await fetch('/stock-records');
+        const data = await response.json();
+        setStockRecords(data);
     }
 
-    const fetchSuppliers = () => {
-        setCurrentStocks([
-            {transactionId: '5bdbdjbhjb', productId: 'P123', employee: 'Jack', type: 'Stock out', entity: 'Cus - Customer name', time:'13:07', date: 'Feb 08, 2022', quantity:'05'},
-            {transactionId: '5bdbdjbsjb', productId: 'P133', employee: 'Katie', type: 'Stock in', entity: 'Sup - Supplier name', time:'17:07', date: 'Feb 06, 2022', quantity:'12'},
-            {transactionId: '5bdbdjbajb', productId: 'P143', employee: 'Hank', type: 'Stock out', entity: 'Cus - Customer name', time:'23:07', date: 'Feb 07, 2022', quantity:'25'},
-            {transactionId: '5bdbdjbxjb', productId: 'P153', employee: 'Travis', type: 'Stock in', entity: 'Sup - Supplier name', time:'33:07', date: 'Feb 09, 2022', quantity:'35'},
-            {transactionId: '5bdbdjbvjb', productId: 'P123', employee: 'Jack', type: 'Stock out', entity: 'Cus - Customer name', time:'13:07', date: 'Feb 08, 2022', quantity:'05'},
-            {transactionId: '5bdbdjbbjb', productId: 'P133', employee: 'Katie', type: 'Stock in', entity: 'Sup - Supplier name', time:'17:07', date: 'Feb 06, 2022', quantity:'12'},
-            {transactionId: '5bdbdjbnjb', productId: 'P143', employee: 'Hank', type: 'Stock out', entity: 'Cus - Customer name', time:'23:07', date: 'Feb 07, 2022', quantity:'25'},
-            {transactionId: '5bdbdjbmjb', productId: 'P153', employee: 'Travis', type: 'Stock in', entity: 'Sup - Supplier name', time:'33:07', date: 'Feb 09, 2022', quantity:'35'}
-        ])
+    const addStockRecord = async (newRecord) => {
+        const response = await fetch('/stocks', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(newRecord)
+        })
+
+        const data = await response.json();
+        setStockRecords([data, ...stockRecords]);
     }
 
-    const fetchCustomers = () => {
-        setCustomers([
-            {transactionId: '5bdbdjbhjb', productId: 'P123', employee: 'Jack', type: 'Stock out', entity: 'Cus - Customer name', time:'13:07', date: 'Feb 08, 2022', quantity:'05'},
-            {transactionId: '5bdbdjbsjb', productId: 'P133', employee: 'Katie', type: 'Stock in', entity: 'Sup - Supplier name', time:'17:07', date: 'Feb 06, 2022', quantity:'12'},
-            {transactionId: '5bdbdjbajb', productId: 'P143', employee: 'Hank', type: 'Stock out', entity: 'Cus - Customer name', time:'23:07', date: 'Feb 07, 2022', quantity:'25'},
-            {transactionId: '5bdbdjbxjb', productId: 'P153', employee: 'Travis', type: 'Stock in', entity: 'Sup - Supplier name', time:'33:07', date: 'Feb 09, 2022', quantity:'35'},
-            {transactionId: '5bdbdjbvjb', productId: 'P123', employee: 'Jack', type: 'Stock out', entity: 'Cus - Customer name', time:'13:07', date: 'Feb 08, 2022', quantity:'05'},
-            {transactionId: '5bdbdjbbjb', productId: 'P133', employee: 'Katie', type: 'Stock in', entity: 'Sup - Supplier name', time:'17:07', date: 'Feb 06, 2022', quantity:'12'},
-            {transactionId: '5bdbdjbnjb', productId: 'P143', employee: 'Hank', type: 'Stock out', entity: 'Cus - Customer name', time:'23:07', date: 'Feb 07, 2022', quantity:'25'},
-            {transactionId: '5bdbdjbmjb', productId: 'P153', employee: 'Travis', type: 'Stock in', entity: 'Sup - Supplier name', time:'33:07', date: 'Feb 09, 2022', quantity:'35'}
-        ])
+    const stockOutProduct = async (updatedRecord) => {
+        const response = await fetch('/stocks?productId='+updatedRecord.productId, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(updatedRecord)
+        });
+
+        const data = await response.json();
+        setStockRecords([data, ...stockRecords]);
     }
 
-    const fetchCurrentStocks = () => {
-        setSuppliers([
-            {transactionId: '5bdbdjbhjb', productId: 'P123', employee: 'Jack', type: 'Stock out', entity: 'Cus - Customer name', time:'13:07', date: 'Feb 08, 2022', quantity:'05'},
-            {transactionId: '5bdbdjbsjb', productId: 'P133', employee: 'Katie', type: 'Stock in', entity: 'Sup - Supplier name', time:'17:07', date: 'Feb 06, 2022', quantity:'12'},
-            {transactionId: '5bdbdjbajb', productId: 'P143', employee: 'Hank', type: 'Stock out', entity: 'Cus - Customer name', time:'23:07', date: 'Feb 07, 2022', quantity:'25'},
-            {transactionId: '5bdbdjbxjb', productId: 'P153', employee: 'Travis', type: 'Stock in', entity: 'Sup - Supplier name', time:'33:07', date: 'Feb 09, 2022', quantity:'35'},
-            {transactionId: '5bdbdjbvjb', productId: 'P123', employee: 'Jack', type: 'Stock out', entity: 'Cus - Customer name', time:'13:07', date: 'Feb 08, 2022', quantity:'05'},
-            {transactionId: '5bdbdjbbjb', productId: 'P133', employee: 'Katie', type: 'Stock in', entity: 'Sup - Supplier name', time:'17:07', date: 'Feb 06, 2022', quantity:'12'},
-            {transactionId: '5bdbdjbnjb', productId: 'P143', employee: 'Hank', type: 'Stock out', entity: 'Cus - Customer name', time:'23:07', date: 'Feb 07, 2022', quantity:'25'},
-            {transactionId: '5bdbdjbmjb', productId: 'P153', employee: 'Travis', type: 'Stock in', entity: 'Sup - Supplier name', time:'33:07', date: 'Feb 09, 2022', quantity:'35'}
-        ])
+    const fetchProductDetails =  async (productId) => {
+        const records = await fetch('/stocks?productId='+productId);
+        const data = await records.json();
+        return data;
     }
 
+    const fetchSuppliers = async () => {
+        const response = await fetch('/suppliers');
+        const data = await response.json();
+        setSuppliers(data);
+    }
 
+    const fetchCustomers = async () => {
+        const response = await fetch('/customers');
+        const data = await response.json();
+        setCustomers(data);
+    }
 
- 
+    const fetchCurrentStocks = async () => {
+        const response = await fetch('/stocks');
+        const data = await response.json();
+        setCurrentStocks(data);
+    }
+
     return (
-        <InventoryContext.Provider value={{stockRecords, currentStocks, suppliers, customers}}>{children}</InventoryContext.Provider>
+        <InventoryContext.Provider value={{stockRecords, currentStocks, suppliers, customers, addStockRecord, fetchProductDetails, stockOutProduct}}>{children}</InventoryContext.Provider>
     )
 }
 
